@@ -1,5 +1,6 @@
 import { ElmerUI, WindowResizeListen } from "elmer-ui-core";
 import "./app/App";
+import "./app/AppRouter";
 import "./codeEditor/index";
 import "./style/index.less";
 // // dd
@@ -19,7 +20,7 @@ window.onload = ()=> {
     wResizeListen.listen();
     // tslint:disable-next-line:no-console
     console.time("ElmerRender");
-    ui.render(document.getElementById("app"), "<eui-app />", indexData);
+    ui.render(document.getElementById("app"), "<eui-app-router />", indexData);
     htmlCode = null;
     wResizeListen = null;
     // tslint:disable-next-line:no-console

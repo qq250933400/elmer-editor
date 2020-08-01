@@ -1,3 +1,46 @@
-<eui-office-form tabMenu="{{model.menus.tabMenus}}" help="{{true}}">
-    <eui-office-split-layout></eui-office-split-layout>
+<eui-office-form tabMenu="{{model.core.tabMenus}}" help="{{true}}"
+    et:onClick="onOfficeFormClick"
+    title="UI编辑器"
+    id="{{formAppId}}"
+>
+    <eui-office-split-layout
+        rightTitle="{{state.rightTitle}}"
+        leftTitle="{{state.leftTitle}}"
+        et:onLayoutChange="handleOnSplitLayoutChange"
+    >
+        <ChildrenWrapperLeft>
+            <TopSplitLayout>
+                <ChildrenWrapperTop>
+                    <div class="UIEditor_structure">
+                        <eui-tree-view help="{{true}}" data="{{state.htmlStruct}}"/>
+                    </div>
+                </ChildrenWrapperTop>
+                <ChildrenWrapperBottom>
+                    <div class="UIEditor_structure">
+                        <eui-tab>
+                            <eui-tab-item title="样式">
+                                <span>table item 样式</span>
+                            </eui-tab-item>
+                            <eui-tab-item title="属性">
+                                <span>table item 属性</span>
+                            </eui-tab-item>
+                            <eui-tab-item title="事件">
+                                <span>table item 事件</span>
+                            </eui-tab-item>
+                        </eui-tab>
+                    </div>
+                </ChildrenWrapperBottom>
+            </TopSplitLayout>
+        </ChildrenWrapperLeft>
+        <ChildrenWrapperRight>
+            <div class="AppRightArea">
+                <eui-code-editor id="{{editorId}}" code="{{state.codeSource}}" language="{{state.showCodeType}}" if="{{state.showCode}}"
+                    et:onDidSave="onEditorDidSave"
+                />
+                <div em:show="state.showCode eq false" class="AppIframeArea">
+                    <iframe attach="{{true}}" id="{{iframeId}}" src="{{state.previewLink}}"/>
+                </div>
+            </div>
+        </ChildrenWrapperRight>
+    </eui-office-split-layout>
 </eui-office-form>

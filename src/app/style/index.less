@@ -2,3 +2,32 @@ ul,ul li,p {
     margin: 0;
     padding: 0;
 }
+.AppRightArea {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    .AppIframeArea,
+    .AppIframeArea iframe {
+        display: block;
+        height: 100%;
+        width: 100%;
+        border: none;
+    }
+}
+.UIEditor_structure {
+    display: block;
+    height: 100%;
+    overflow: auto;
+    background: #E8F4F9;
+    .eui-treeview ul li label:hover {
+        background: #fde3cb !important;
+        border-color: #ffd7b2 !important;
+        i {
+            color: #dc9a5d !important;
+        }
+        span {
+            color: #15428b !important;
+        }
+    }
+}

@@ -33,25 +33,69 @@ export default class CodeEditor extends Component {
     uDom: HTMLDivElement;
     editor: monacoApi.editor.IStandaloneCodeEditor;
     props: TypeCodeEditorProps;
-    constructor(props:any) {
+    private initCode: string;
+    private language: string;
+    constructor(props:TypeCodeEditorProps) {
         super(props);
         this.uid = this.guid();
+        this.initCode = props.code;
+        this.language = props.language;
+    }
+    $onPropsChanged(props: TypeCodeEditorProps): void {
+        if(props.code !== this.initCode) {
+            this.initCode = props.code;
+            if(this.editor) {
+                this.editor.setValue(props.code);
+            }
+        }
+        if(props.language !== this.language) {
+            this.editor.dispose();
+            this.language = props.language;
+            this.editor = monacoApi.editor.create(this.uDom, {
+                language: this.language,
+                theme: this.props.theme,
+                value: this.initCode || "",
+                automaticLayout: true
+            });
+            this.setEventListen();
+        }
     }
     $didMount(): void {
         this.uDom = this.dom[this.uid];
         this.editor = monacoApi.editor.create(this.uDom, {
-            language: this.props.language,
-            theme: "vs-dark"
+            language: this.language,
+            theme: this.props.theme,
+            value: this.initCode || "",
+            automaticLayout: true
         });
-        console.log(this.props.language);
+        this.setEventListen();
     }
     $dispose(): void {
         this.editor.dispose();
     }
+    resetLayout(): void {
+        this.editor.layout();
+    }
     getCode(): string {
         return this.editor.getValue();
     }
+    setCode(code: string): void {
+        this.editor.setValue(code);
+    }
     render():any {
         return `<div class="CodeEditor" id="{{uid}}"></div>`;
+    }
+    private setEventListen(): void {
+        this.editor.onDidBlurEditorWidget(()=>{
+            typeof this.props.onBlur === "function" && this.props.onBlur();
+        });
+        this.editor.onDidChangeModelContent((event) => {
+            typeof this.props.onChange === "function" && this.props.onChange(event);
+        });
+        this.editor.onKeyDown((event) => {
+            if(event.ctrlKey && event.keyCode === 49) {
+                typeof this.props.onDidSave === "function" && this.props.onDidSave();
+            }
+        });
     }
 }
