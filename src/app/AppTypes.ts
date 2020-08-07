@@ -8,9 +8,12 @@ export type TypeAppState = {
     rightTitle?: string;
     leftTitle?: string;
     htmlStruct?: any;
+    cssAttrs?: any;
+    htmlAttrs?: any;
+    eventAttrs?: any;
 };
 
-export type TypeRegisterEvent = "onEditorBlur" | "onEditorChange" | "onEditorSave";
+export type TypeRegisterEvent = "onEditorBlur" | "onEditorChange" | "onEditorSave" | "onStructTreeClick";
 export type TypeRegisterEventListener = {
     eventName: TypeRegisterEvent;
     callback?: Function;

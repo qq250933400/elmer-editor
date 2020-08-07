@@ -22,11 +22,17 @@
             margin-top: -1.0px;
         }
     }
-    .TopSplitLayout_Top,.TopSplitLayout_Bottom {
+    .TopSplitLayout_Top {
         display: block;
-        height: calc(~'50% - 3px');
-        height: -webkit-calc(~'50% - 3px');
-        height: -moz-calc(~'50% - 3px');
+        height: 40%;
+        position: relative;
+        overflow: auto;
+    }
+    .TopSplitLayout_Bottom {
+        display: block;
+        height: calc(~'60% - 3px');
+        height: -webkit-calc(~'60% - 3px');
+        height: -moz-calc(~'60% - 3px');
         position: relative;
         overflow: auto;
     }

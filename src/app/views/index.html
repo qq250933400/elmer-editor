@@ -12,14 +12,14 @@
             <TopSplitLayout>
                 <ChildrenWrapperTop>
                     <div class="UIEditor_structure">
-                        <eui-tree-view help="{{true}}" data="{{state.htmlStruct}}"/>
+                        <eui-tree-view et:onChange="onStructTreeClick" changeOnDblClick="{{false}}" data="{{state.htmlStruct}}"/>
                     </div>
                 </ChildrenWrapperTop>
                 <ChildrenWrapperBottom>
                     <div class="UIEditor_structure">
                         <eui-tab>
                             <eui-tab-item title="样式">
-                                <span>table item 样式</span>
+                                <eui-property-editor isHumpToStr="{{true}}" data="{{state.cssAttrs}}"/>
                             </eui-tab-item>
                             <eui-tab-item title="属性">
                                 <span>table item 属性</span>

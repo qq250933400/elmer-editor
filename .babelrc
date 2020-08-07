@@ -9,9 +9,10 @@
                         "safari >= 7"
                     ]
                 },
-                "debug": true,
+                "debug": false,
                 "modules": "commonjs"
             }
-        ]
+        ],
+        "stage-2"
     ]
 }

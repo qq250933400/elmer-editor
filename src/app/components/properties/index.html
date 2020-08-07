@@ -1,0 +1,21 @@
+<div class="properties-editor">
+    <div class="properties-editor-list">
+        <label class="properties-editor-line"
+            em:for="let attr in this.state.data"
+            tabindex="{{index}}"
+            title="{{attr.name}}"
+        >
+            <span>{{attr.name}}</span>
+            <div>
+                <input type="text" value="{{attr.defaultValue}}" et:click="handleOnInputClick" et:keydown="handleOnInputKeydown" et:focus="handleOnLineFocus"/>
+                <ul class="properties-editor-suggest" em:if="attr.suggest.length gt 0" em:show="state.focusData.name eq attr.name && state.showSuggest eq true">
+                    <li em:for="let sug in attr.suggest" et:click="onSuggestClick" data-attr="{{attr.index}}"><span>{{sug}}</span></li>
+                </ul>
+            </div>
+        </label>
+        <label em:if="this.state.data.length eq 0" class="properties-editor-line no-attribute">
+            <span>No Attribute</span>
+        </label>
+    </div>
+    <div class="properties-editor-desc">说明：{{state.focusData.description}}</div>
+</div>

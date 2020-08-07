@@ -8,14 +8,17 @@ import {
 import { ITreeViewItem } from "elmer-common-ui/lib/components/treeView";
 import { autowired, ElmerDOM } from "elmer-ui-core";
 import { HtmlParse, IVirtualElement } from "elmer-virtual-dom";
-import { TypeRegisterEvent, TypeRegisterEventListener } from "../AppTypes";
+import { TypeRegisterEvent, TypeRegisterEventListener, TypeStoreRegisterEvent } from "../AppTypes";
 import Score, { POST_MESSAGE_KEY_VALUE, TypeSCoreEvent } from "../service/SCore";
+
 import MBase from "./MBase";
 
 export default class MMenus extends MBase {
     obj:any;
     tabMenus: TypeOfficeFormTabItem[] = [];
     htmlStructure: ITreeViewItem[] = [];
+
+    eventListeners: TypeStoreRegisterEvent<any> = {};
 
     @autowired(Score)
     private serviceCore: Score;
@@ -81,23 +84,34 @@ export default class MMenus extends MBase {
     }
     updateHtmlStructure(setState?: boolean): void {
         const htmlStructor = this.htmlParse.parse(this.serviceCore.codeHtml);
-        const data: ITreeViewItem[] = [];
+        const data: ITreeViewItem[] = [{
+            title: "Root",
+            key: 0,
+            value: "Root",
+            hasExpand: true,
+            children: []
+        }];
+        let srcIndex = 0;
         const analyze = (saveData: ITreeViewItem[],vDom: IVirtualElement): void => {
             vDom.children.forEach((item:IVirtualElement, index: number): void => {
                 const newTreeViewItem: ITreeViewItem = {
                     title: item.tagName,
-                    key: index,
+                    key: srcIndex,
                     value: item.path.join("-"),
-                    hasExpand: item.children.length > 0,
+                    hasExpand: item.children.length > 0 && !(item.children.length === 1 && item.children[0].tagName === "text"),
                     children: []
                 };
+                srcIndex += 1;
                 saveData.push(newTreeViewItem);
                 if(item.children.length > 0) {
-                    analyze(newTreeViewItem.children, item);
+                    if((item.children.length === 1 && item.children[0].tagName !== "text") || item.children.length > 1) {
+                        saveData[saveData.length - 1].hasExpand = false;
+                        analyze(newTreeViewItem.children, item);
+                    }
                 }
             });
         };
-        analyze(data, htmlStructor);
+        analyze(data[0].children, htmlStructor);
         if(setState) {
             this.setState(<any>{
                 htmlStruct: data
@@ -110,7 +124,7 @@ export default class MMenus extends MBase {
         this.raiseEvent("onUpdateHtml", "<div>save</div>");
     }
     callRegisterEvent(eventName: TypeRegisterEvent, args?: any[]): void {
-        const listeners = this.getEventListeners();
+        const listeners = this.eventListeners;
         if(listeners) {
             Object.keys(listeners).map((lisKey: string): any => {
                 const listener: TypeRegisterEventListener​​ = listeners[lisKey];

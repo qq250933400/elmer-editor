@@ -2,30 +2,38 @@ import "elmer-common-ui/lib/components";
 import { Component, declareComponent, IElmerEvent } from "elmer-ui-core";
 import { TypeAppState } from "./AppTypes";
 import TopSplitLayout from "./components/TopSplitLayout";
+import MAttributes from "./model/MAttributes";
 import MCore from "./model/MCore";
 import MViews from "./model/MView";
 import SCore from "./service/SCore";
+import SCSSProperties from "./service/SCSSProperties";
+
 // tslint:disable: ordered-imports
 import "./components/AppCanvas";
+import "./components/properties";
 import "./style/index.less";
 import "elmer-common-ui/lib/style/app.less";
 
 type TypeAppModel = {
     core: MCore,
-    view: MViews
+    view: MViews,
+    attributes: MAttributes
 };
 type TypeAppService = {
     core: SCore;
+    css: SCSSProperties;
 };
 
 @declareComponent({
     selector: "app",
     model: {
         core: MCore,
-        view: MViews
+        view: MViews,
+        attributes: MAttributes
     },
     service: {
-        core: SCore
+        core: SCore,
+        css: SCSSProperties
     },
     components: [
         {
@@ -95,6 +103,9 @@ export default class App extends Component {
     }
     onEditorDidSave(): void {
         this.model.core.callRegisterEvent("onEditorSave");
+    }
+    onStructTreeClick(evt:any): void {
+        this.model.core.callRegisterEvent("onStructTreeClick", [evt]);
     }
     render():any {
         return require("./views/index.html");

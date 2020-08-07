@@ -8,7 +8,6 @@ export default abstract class MBase extends Common {
     coreObj:MCore;
     iframe: HTMLIFrameElement;
     score: SCore;
-    private eventListeners: TypeStoreRegisterEvent<any> = {};
     constructor(appVirtualDom:any) {
         super();
         this.appDom = appVirtualDom;
@@ -37,14 +36,14 @@ export default abstract class MBase extends Common {
     }
     registerEvent(eventName: TypeRegisterEvent, callback:Function, thisObj?: any): void {
         const eventId = this.guid();
-        this.eventListeners[eventId] = {
+        this.coreObj.eventListeners[eventId] = {
             eventName,
             callback,
             this: thisObj
         };
     }
     getEventListeners<T>(): TypeStoreRegisterEvent<T> {
-        return this.eventListeners;
+        return this.coreObj.eventListeners;
     }
     /**
      * 在Comonent初始化model以后触发的事件，不需要重写当前方法
