@@ -1,0 +1,59 @@
+.icon_save,
+.icon_export,
+.icon_css,
+.icon_javascript,
+.icon_html,
+.icon_create,
+.icon_fullscreen {
+  position: relative;
+}
+.icon_save::before,
+.icon_export::before,
+.icon_css::before,
+.icon_javascript::before,
+.icon_html::before,
+.icon_create::before,
+.icon_fullscreen::before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background-size: 32px 32px;
+  margin-left: -16px;
+  margin-top: -16px;
+  left: 50%;
+  top: 50%;
+}
+.icon_save::before {
+  background: url(icon/icon_save.png) no-repeat;
+  background-size: 32px 32px;
+}
+.icon_export::before {
+  background: url(icon/icon_export.png) no-repeat;
+  background-size: 32px 32px;
+}
+.icon_css::before {
+  background: url(icon/icon_view_css.png) no-repeat;
+  background-size: 32px 32px;
+}
+.icon_javascript {
+  background: url(icon/icon_javascript.png) no-repeat;
+  background-size: 32px 32px;
+  background-position: 5px 5px;
+}
+.icon_html {
+  background: url(icon/icon_html.png) no-repeat;
+  background-size: 32px 32px;
+  background-position: 5px 5px;
+}
+.icon_create {
+  background: url(icon/icon_create.png) no-repeat;
+  background-size: 32px 32px;
+  background-position: 5px 5px;
+}
+.icon_fullscreen {
+  background: url(icon/icon_fullscreen.png) no-repeat;
+  background-size: 32px 32px;
+  background-position: 5px 5px;
+}

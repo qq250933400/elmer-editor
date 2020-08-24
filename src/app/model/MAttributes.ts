@@ -1,6 +1,7 @@
 import { ITreeViewItem } from "elmer-common-ui/lib/components/treeView";
 import { autowired, IElmerEvent } from "elmer-ui-core";
 import SCSSProperties from "../service/SCSSProperties";
+import { TypeAppMode } from "./IAppModel";
 import MBase from "./MBase";
 
 export default class MAttributes extends MBase {
@@ -10,6 +11,9 @@ export default class MAttributes extends MBase {
         this.registerEvent("onStructTreeClick", (event:IElmerEvent): void => {
             this.updateAttributes(event);
         }, this);
+    }
+    getAppMode():TypeAppMode {
+        return "UIEditor";
     }
     updateAttributes(event:IElmerEvent): void {
         const itemData:ITreeViewItem = event.data;

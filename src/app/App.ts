@@ -7,6 +7,7 @@ import MCore from "./model/MCore";
 import MViews from "./model/MView";
 import SCore from "./service/SCore";
 import SCSSProperties from "./service/SCSSProperties";
+import { mapStateToProps } from "./state/action";
 
 // tslint:disable: ordered-imports
 import "./components/AppCanvas";
@@ -34,6 +35,9 @@ type TypeAppService = {
     service: {
         core: SCore,
         css: SCSSProperties
+    },
+    connect: {
+        mapStateToProps
     },
     components: [
         {
@@ -63,6 +67,10 @@ export default class App extends Component {
         Object.keys(this.model).map((modelKey:string) => {
             typeof this.model[modelKey].afterInit === "function" && typeof this.model[modelKey].afterInit();
         });
+        console.log(this.props);
+    }
+    $willReceiveProps(props:any): void {
+        console.log(props);
     }
     $dispose(): void {
         Object.keys(this.model).map((modelKey:string) => {
@@ -98,7 +106,7 @@ export default class App extends Component {
             callback.apply(obj, [evt]);
         } else {
             // tslint:disable-next-line: no-console
-            console.log("do not support this button event");
+            console.log("do not support this button event: ", id);
         }
     }
     onEditorDidSave(): void {

@@ -1,4 +1,5 @@
 import { TypeSupportCodeType } from "../AppTypes";
+import { TypeAppMode } from "./IAppModel";
 import MBase from "./MBase";
 
 export default class MView extends MBase {
@@ -24,10 +25,29 @@ export default class MView extends MBase {
                             id: "model.view.onShowHtml"
                         }
                     ]
+                }, {
+                    title: "窗口",
+                    buttons: [
+                        {
+                            title: "全屏",
+                            icon: "icon_fullscreen",
+                            id: "model.view.onFullScreen"
+                        }
+                    ]
                 }
             ]
         });
         this.coreObj.registerEvent("onEditorSave",this.onEditorSave, this);
+    }
+    getAppMode():TypeAppMode {
+        return "Any";
+    }
+    onFullScreen(): void {
+        if(this.isFullScreen()) {
+            this.exitFullscreen();
+        } else {
+            this.launchFullscreen(document.body);
+        }
     }
     onEditorSave(): void {
         const showCodeType = this.getState("showCodeType");
@@ -82,7 +102,7 @@ export default class MView extends MBase {
             this.coreObj.updateHtmlStructure(true);
         }
     }
-    private getEditorCode(codeType: TypeSupportCodeType​​, lastShowCodeType: TypeSupportCodeType​​, showCode?: boolean): any {
+    private getEditorCode(codeType: TypeSupportCodeType, lastShowCodeType: TypeSupportCodeType, showCode?: boolean): any {
         if(showCode) {
             if(codeType === "css") {
                 return this.score.codeCSS;

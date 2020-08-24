@@ -2,7 +2,10 @@ import { ElmerUI, WindowResizeListen } from "elmer-ui-core";
 import "./app/App";
 import "./app/AppRouter";
 import "./codeEditor/index";
+import "./config/service";
 import "./style/index.less";
+import "./app/state/reducers";
+
 // // dd
 window.onload = ()=> {
     const ui = new ElmerUI();

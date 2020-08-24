@@ -1,18 +1,26 @@
 import { Common } from "elmer-common";
 import { TypeAppState, TypeRegisterEvent, TypeStoreRegisterEvent } from "../AppTypes";
 import SCore, { POST_MESSAGE_KEY_VALUE, TypeSCoreEvent } from "../service/SCore";
+import { IAppModel, TypeAppLifeCycle, TypeAppMode } from "./IAppModel";
 import MCore from "./MCore";
 
-export default abstract class MBase extends Common {
+export default abstract class MBase extends Common implements IAppModel {
     appDom: any;
     coreObj:MCore;
     iframe: HTMLIFrameElement;
     score: SCore;
+
     constructor(appVirtualDom:any) {
         super();
         this.appDom = appVirtualDom;
     }
-    init?(): void;
+    abstract init(): void;
+    getAppMode(): TypeAppMode {
+        throw new Error("Method not implemented.");
+    }
+    registerLifeCycleMethod(appMode: TypeAppMode, lifeCycleType: TypeAppLifeCycle, callback: Function): void {
+        throw new Error("Method not implemented.");
+    }
     setIframe(iframeDom:HTMLIFrameElement): void {
         this.iframe = iframeDom;
     }
@@ -26,6 +34,7 @@ export default abstract class MBase extends Common {
         if(this.iframe) {
             this.iframe.contentWindow.postMessage({
                 type: POST_MESSAGE_KEY_VALUE,
+                appMode: this.getAppMode(),
                 eventName,
                 data
             }, null);

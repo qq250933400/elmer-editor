@@ -11,6 +11,7 @@ import { HtmlParse, IVirtualElement } from "elmer-virtual-dom";
 import { TypeRegisterEvent, TypeRegisterEventListener, TypeStoreRegisterEvent } from "../AppTypes";
 import Score, { POST_MESSAGE_KEY_VALUE, TypeSCoreEvent } from "../service/SCore";
 
+import { TypeAppMode } from "./IAppModel";
 import MBase from "./MBase";
 
 export default class MMenus extends MBase {
@@ -26,6 +27,10 @@ export default class MMenus extends MBase {
     private $:ElmerDOM;
     @autowired(HtmlParse)
     private htmlParse: HtmlParse;
+
+    getAppMode(): TypeAppMode {
+        return "Any";
+    }
 
     dispose(): void {
         window.removeEventListener("message", this.listen.bind(this));
