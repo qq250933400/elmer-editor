@@ -1,4 +1,4 @@
-<eui-office-form tabMenu="{{model.core.tabMenus}}" help="{{true}}"
+<eui-office-form tabMenu="{{model.core.tabMenus}}"
     et:onClick="onOfficeFormClick"
     title="UI编辑器"
     id="{{formAppId}}"
@@ -7,6 +7,8 @@
         rightTitle="{{state.rightTitle}}"
         leftTitle="{{state.leftTitle}}"
         et:onLayoutChange="handleOnSplitLayoutChange"
+        id="appRightArea"
+        showCode="{{state.showCode}}"
     >
         <ChildrenWrapperLeft>
             <TopSplitLayout>
@@ -34,10 +36,15 @@
         </ChildrenWrapperLeft>
         <ChildrenWrapperRight>
             <div class="AppRightArea">
-                <eui-code-editor id="{{editorId}}" code="{{state.codeSource}}" language="{{state.showCodeType}}" if="{{state.showCode}}"
-                    et:onDidSave="onEditorDidSave"
-                />
+                <div if="{{state.showCode}}" style="width: 100%;height:100%;display:bock;">
+                    <eui-code-editor id="{{editorId}}"
+                        code="{{state.codeSource}}"
+                        language="{{state.showCodeType}}"
+                        et:onDidSave="onEditorDidSave"
+                    />
+                </div>
                 <div em:show="state.showCode eq false" class="AppIframeArea">
+                    <span>{{state.demoCount}}</span>
                     <iframe attach="{{true}}" id="{{iframeId}}" src="{{state.previewLink}}"/>
                 </div>
             </div>

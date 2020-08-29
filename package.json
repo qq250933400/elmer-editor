@@ -25,7 +25,9 @@
         "last 2 versions",
         "safari >= 7"
     ],
-    "elmer-cli-webpack-config": "./config/webpack.config.js",
+    "elmer-cli-webpack-config": {
+        "build": "./config/webpack.config.js"
+    },
     "devDependencies": {
         "autoprefixer": "^9.2.0",
         "babel-cli": "^6.26.0",
@@ -70,10 +72,9 @@
         "babel-core": "^6.26.3",
         "babel-polyfill": "^6.26.0",
         "chalk": "^2.4.1",
-        "elmer-common": "^0.1.7",
-        "elmer-common-ui": "^1.0.15",
-        "elmer-ui-core": "^1.2.25",
-        "elmer-virtual-dom": "^1.0.6",
+        "elmer-common": "^0.1.8",
+        "elmer-common-ui": "^1.0.17",
+        "elmer-ui-core": "^1.2.29",
         "lodash.camelcase": "^4.3.0",
         "monaco-editor": "^0.20.0",
         "promise": "^8.0.3"

@@ -1,10 +1,11 @@
 import { ElmerUI, WindowResizeListen } from "elmer-ui-core";
 import "./app/App";
+import "./app/AppLogin";
 import "./app/AppRouter";
+import "./app/state/reducers";
 import "./codeEditor/index";
 import "./config/service";
 import "./style/index.less";
-import "./app/state/reducers";
 
 // // dd
 window.onload = ()=> {
@@ -17,7 +18,6 @@ window.onload = ()=> {
             before: "sdd"
         }
     };
-    typeof window["debug"] === "function" && window["debug"](false);
     let wResizeListen = new WindowResizeListen();
     let htmlCode = require("./app/views/index.html");
     wResizeListen.listen();

@@ -143,6 +143,9 @@ export default class MMenus extends MBase {
             });
         }
     }
+    create(event:any): void {
+        console.log(event);
+    }
     private listen(event:any): void {
         const msgData = event.data || {};
         if(msgData.type === POST_MESSAGE_KEY_VALUE) {

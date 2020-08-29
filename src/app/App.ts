@@ -63,14 +63,14 @@ export default class App extends Component {
     $inject(): void {
         this.iframeId = this.guid();
         this.formAppId = this.guid();
-        this.editorId = this.guid();
+        this.editorId = this.guid();(<any>this.state).demoCode = (<any>this.props).demoCode;
         Object.keys(this.model).map((modelKey:string) => {
             typeof this.model[modelKey].afterInit === "function" && typeof this.model[modelKey].afterInit();
         });
-        console.log(this.props);
+        console.log(this.props," ++++++  ");
     }
     $willReceiveProps(props:any): void {
-        console.log(props);
+        console.log("willReceiveProps", props);
     }
     $dispose(): void {
         Object.keys(this.model).map((modelKey:string) => {
@@ -86,6 +86,7 @@ export default class App extends Component {
     }
     $didUpdate(): void {
         if(this.state.showCode) {
+            console.log("------didUpdate------");
             const formApp = this.dom[this.formAppId];
             this.editor = formApp.dom[this.editorId];
         } else {

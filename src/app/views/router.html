@@ -1,4 +1,7 @@
-<eui-router>
-    <eui-route path="/editor/canvas" component="eui-ui-editor-canvas"/>
-    <eui-route path="/" component="eui-app"/>
-</eui-router>
+<eui-redux-provider et:reducers="{{reducerObj}}">
+    <eui-router>
+        <eui-route path="/editor/canvas" component="eui-ui-editor-canvas"/>
+        <eui-route path="/login" component="eui-editor-login"/>
+        <eui-route path="/" ex:props="{{testData}}" component="eui-app"/>
+    </eui-router>
+</eui-redux-provider>

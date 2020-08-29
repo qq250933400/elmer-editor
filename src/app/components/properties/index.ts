@@ -1,4 +1,4 @@
-import { autowired, Component, declareComponent, getUI, IElmerEvent, IPropCheckRule, PropTypes, IElmerKeyboardEvent } from "elmer-ui-core";
+import { Component, declareComponent, getUI, IElmerEvent, IElmerKeyboardEvent, IPropCheckRule, PropTypes } from "elmer-ui-core";
 import "./index.less";
 
 type TypePropertiesProps = {
@@ -135,9 +135,11 @@ export default class PropertiesComponent extends Component {
         return require("./index.html");
     }
     $dispose(): void {
-        this.dropdownRender.dispose();
-        this.dropdownUI.parent = null;
-        delete this.dropdownUI.parent;
+        if(this.dropdownRender) {
+            this.dropdownRender.dispose();
+            this.dropdownUI.parent = null;
+            delete this.dropdownUI.parent;
+        }
     }
     private convertAttrs(attrData: any): any[] {
         const resultData = [];

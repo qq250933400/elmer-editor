@@ -11,7 +11,7 @@ export default class SCore extends Common {
     <i>example</i>
     <span>ABB</span>
 </div>
-<button>Hello world</button>
+<button et:click="onClick">Hello world: {{state.demoCount}}</button>
 <input type='text' placeholder='Please enter username'/>`;
     codeCSS: string = "css";
     codeJavascript: string = "java";
