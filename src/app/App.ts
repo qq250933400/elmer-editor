@@ -4,6 +4,8 @@ import { TypeAppState } from "./AppTypes";
 import TopSplitLayout from "./components/TopSplitLayout";
 import MAttributes from "./model/MAttributes";
 import MCore from "./model/MCore";
+// import { TypeAppMode } from "./model/IAppModel";
+import MUIEditor from "./model/MUIEditor";
 import MViews from "./model/MView";
 import SCore from "./service/SCore";
 import SCSSProperties from "./service/SCSSProperties";
@@ -16,13 +18,18 @@ import "./style/index.less";
 import "elmer-common-ui/lib/style/app.less";
 
 type TypeAppModel = {
-    core: MCore,
-    view: MViews,
-    attributes: MAttributes
+    core: MCore;
+    view: MViews;
+    attributes: MAttributes;
+    uieditor: MUIEditor
 };
 type TypeAppService = {
     core: SCore;
     css: SCSSProperties;
+};
+
+type TypeAppProps = {
+    templates?: any[];
 };
 
 @declareComponent({
@@ -30,7 +37,8 @@ type TypeAppService = {
     model: {
         core: MCore,
         view: MViews,
-        attributes: MAttributes
+        attributes: MAttributes,
+        uieditor: MUIEditor
     },
     service: {
         core: SCore,
@@ -46,7 +54,7 @@ type TypeAppService = {
         }
     ]
 })
-export default class App extends Component {
+export default class App extends Component<TypeAppProps> {
     model: TypeAppModel;
     service: TypeAppService;
     state: TypeAppState = {
@@ -60,14 +68,19 @@ export default class App extends Component {
     formAppId: string;
     editorId: string;
     editor: any;
+    constructor(props:any) {
+        super(props);
+        this.state.date = (new Date()).format("YYYY-MM-DD");
+    }
     $inject(): void {
         this.iframeId = this.guid();
         this.formAppId = this.guid();
-        this.editorId = this.guid();(<any>this.state).demoCode = (<any>this.props).demoCode;
+        this.editorId = this.guid();
+        this.model.core.setAppMode("UIEditor");
+        (<any>this.state).demoCode = (<any>this.props).demoCode;
         Object.keys(this.model).map((modelKey:string) => {
             typeof this.model[modelKey].afterInit === "function" && typeof this.model[modelKey].afterInit();
         });
-        console.log(this.props," ++++++  ");
     }
     $willReceiveProps(props:any): void {
         console.log("willReceiveProps", props);
@@ -83,10 +96,10 @@ export default class App extends Component {
         Object.keys(this.model).map((modelKey:string) => {
             typeof this.model[modelKey].setIframe === "function" && typeof this.model[modelKey].setIframe(this.iframe);
         });
+        this.model.core.loadProjectInfo();
     }
     $didUpdate(): void {
         if(this.state.showCode) {
-            console.log("------didUpdate------");
             const formApp = this.dom[this.formAppId];
             this.editor = formApp.dom[this.editorId];
         } else {

@@ -1,0 +1,10 @@
+<!--TemplateLoader=Text-->
+<div class="create_template">
+    <label><span>项目名称：</span><input bind="state.name" type="text" class="eui-input" placehoder="请输入项目名称" /></label>
+    <ul>
+        <li em:for="let item in this.attrs.templates" et:click="events.onClick" class.active="item.id eq attrs.choseTP.id">
+            <i class="{{item.icon}}"></i>
+            <label><span>{{item.name}}</span><i>(Desc)</i></label>
+        </li>
+    </ul>
+</div>

@@ -1,3 +1,4 @@
+import { eAlert } from "elmer-common-ui/lib/components/dialog";
 import {
     createOfficeFormTabMenu,
     createOfficeQuickButtons,
@@ -6,12 +7,17 @@ import {
     TypeOfficeFormTabMenuItem
 } from "elmer-common-ui/lib/components/office/widget/form/TypeFormAttr";
 import { ITreeViewItem } from "elmer-common-ui/lib/components/treeView";
-import { autowired, ElmerDOM } from "elmer-ui-core";
+import { autowired, ElmerDOM, ElmerServiceRequest } from "elmer-ui-core";
+// tslint:disable-next-line: no-implicit-dependencies
 import { HtmlParse, IVirtualElement } from "elmer-virtual-dom";
 import { TypeRegisterEvent, TypeRegisterEventListener, TypeStoreRegisterEvent } from "../AppTypes";
 import Score, { POST_MESSAGE_KEY_VALUE, TypeSCoreEvent } from "../service/SCore";
+import createHtmlCode from "../views/create.html";
+import { IAppModel, TypeAppMode } from "./IAppModel";
 
-import { TypeAppMode } from "./IAppModel";
+import { queueCallFunc } from "elmer-common";
+import { showLoading } from "elmer-common-ui/lib/components";
+import { commonHandler } from "../../utils/commonUtils";
 import MBase from "./MBase";
 
 export default class MMenus extends MBase {
@@ -20,6 +26,7 @@ export default class MMenus extends MBase {
     htmlStructure: ITreeViewItem[] = [];
 
     eventListeners: TypeStoreRegisterEvent<any> = {};
+    private appMode: TypeAppMode = "UIEditor";
 
     @autowired(Score)
     private serviceCore: Score;
@@ -27,11 +34,15 @@ export default class MMenus extends MBase {
     private $:ElmerDOM;
     @autowired(HtmlParse)
     private htmlParse: HtmlParse;
+    @autowired(ElmerServiceRequest)
+    private http:ElmerServiceRequest;
 
     getAppMode(): TypeAppMode {
-        return "Any";
+        return this.appMode;
     }
-
+    setAppMode(mode: TypeAppMode): void {
+        this.appMode = mode;
+    }
     dispose(): void {
         window.removeEventListener("message", this.listen.bind(this));
     }
@@ -84,39 +95,11 @@ export default class MMenus extends MBase {
                 }]
             }
         ]);
-        this.updateHtmlStructure();
+        this.updateProjectStruct();
         window.addEventListener("message", this.listen.bind(this));
     }
-    updateHtmlStructure(setState?: boolean): void {
-        const htmlStructor = this.htmlParse.parse(this.serviceCore.codeHtml);
-        const data: ITreeViewItem[] = [{
-            title: "Root",
-            key: 0,
-            value: "Root",
-            hasExpand: true,
-            children: []
-        }];
-        let srcIndex = 0;
-        const analyze = (saveData: ITreeViewItem[],vDom: IVirtualElement): void => {
-            vDom.children.forEach((item:IVirtualElement, index: number): void => {
-                const newTreeViewItem: ITreeViewItem = {
-                    title: item.tagName,
-                    key: srcIndex,
-                    value: item.path.join("-"),
-                    hasExpand: item.children.length > 0 && !(item.children.length === 1 && item.children[0].tagName === "text"),
-                    children: []
-                };
-                srcIndex += 1;
-                saveData.push(newTreeViewItem);
-                if(item.children.length > 0) {
-                    if((item.children.length === 1 && item.children[0].tagName !== "text") || item.children.length > 1) {
-                        saveData[saveData.length - 1].hasExpand = false;
-                        analyze(newTreeViewItem.children, item);
-                    }
-                }
-            });
-        };
-        analyze(data[0].children, htmlStructor);
+    updateProjectStruct(setState?: boolean): void {
+        const data = this.getProjectStructure();
         if(setState) {
             this.setState(<any>{
                 htmlStruct: data
@@ -125,6 +108,22 @@ export default class MMenus extends MBase {
             this.appDom.state.htmlStruct = data;
         }
     }
+    getProjectStructure(): any {
+        const models = this.appDom.model;
+        const appMode = this.getAppMode();
+        let structData:any[];
+        if(models) {
+            Object.keys(models).map((modelKey: string): any => {
+                if(modelKey !== "core") {
+                    const tmpModel:IAppModel = models[modelKey];
+                    if(tmpModel.getAppMode() === appMode && typeof tmpModel["getProjectStruct"] === "function") {
+                        structData = tmpModel["getProjectStruct"]();
+                    }
+                }
+            });
+        }
+        return structData;
+    }
     save(): void {
         this.raiseEvent("onUpdateHtml", "<div>save</div>");
     }
@@ -132,7 +131,7 @@ export default class MMenus extends MBase {
         const listeners = this.eventListeners;
         if(listeners) {
             Object.keys(listeners).map((lisKey: string): any => {
-                const listener: TypeRegisterEventListener​​ = listeners[lisKey];
+                const listener: TypeRegisterEventListener = listeners[lisKey];
                 if(listener.eventName === eventName && typeof listener.callback === "function") {
                     if(this.isArray(args)) {
                         listener.callback.apply(listener.this, args);
@@ -144,7 +143,106 @@ export default class MMenus extends MBase {
         }
     }
     create(event:any): void {
-        console.log(event);
+        const templateData = this.appDom.props.templates;
+        const attrsData = {
+            templates: templateData,
+            choseTP: null,
+        };
+        const eAlertResult = eAlert({
+            title: "新建项目",
+            content: createHtmlCode,
+            attrs: attrsData,
+            events: {
+                onClick: (eventObj:any) => {
+                    attrsData.choseTP = eventObj.data.item;
+                    eAlertResult.setData({
+                        attrs: attrsData
+                    });
+                }
+            },
+            msgType: "OkCancel",
+            okText: "创建",
+            onBefore: (cevent:any) => {
+                cevent.cancel = true;
+                if(!(eAlertResult.component as any).attrs.choseTP) {
+                    eAlert({
+                        title: "错误",
+                        message: "请选择创建项目模板",
+                        iconType: "Error",
+                    });
+                    return;
+                }
+                if(this.isEmpty(eAlertResult.component.state["name"])) {
+                    eAlert({
+                        title: "错误",
+                        message: "项目名称不能为空",
+                        iconType: "Error",
+                    });
+                    return;
+                }
+                let loading = showLoading({title: "创建项目"});
+                this.http.sendRequest({
+                    namespace: "app",
+                    endPoint: "createProject",
+                    data: {
+                        name: eAlertResult.component.state["name"],
+                        template: {
+                            code: this.getValue(eAlertResult, "component.attrs.choseTP.code"),
+                            codeId: this.getValue(eAlertResult, "component.attrs.choseTP.id")
+                        }
+                    }
+                }).then((resp) => {
+                    loading.dispose();
+                    loading = null;
+                    if(!commonHandler(resp)) {
+                        eAlertResult.hide();
+                    }
+                }).catch((error) => {
+                    loading.dispose();
+                    loading = null;
+                    commonHandler(error, true);
+                });
+            }
+        });
+    }
+    loadProjectInfo(): void {
+        const loading = showLoading({title: "加载项目"});
+        queueCallFunc([
+            {
+                id: "projectInfo",
+                params: {},
+                fn: ():any => {
+                    return new Promise((resolve, reject) => {
+                        this.http.sendRequest({
+                            namespace: "app",
+                            endPoint: "loadProject",
+                            data: {
+                                projectId: "{7EE30842-F858-895F-1044-8B029AAA65E2}"
+                            }
+                        }).then((data:any) => {
+                            if(data.statusCode === 200) {
+                                const info = data.data;
+                                this.setState({
+                                    name: info.name
+                                });
+                                resolve(info);
+                            } else {
+                                reject(data);
+                            }
+                        }).catch((error) => {
+                            reject(error);
+                        });
+                    });
+                }
+            }
+        ])
+        .then(() => {
+            loading.dispose();
+        })
+        .catch((error) => {
+            loading.dispose();
+            commonHandler(error.exception, true);
+        });
     }
     private listen(event:any): void {
         const msgData = event.data || {};

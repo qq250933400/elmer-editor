@@ -4,7 +4,10 @@
 .icon_javascript,
 .icon_html,
 .icon_create,
-.icon_fullscreen {
+.icon_fullscreen,
+.icon_code,
+.icon_animation,
+.icon_ui {
   position: relative;
 }
 .icon_save::before,
@@ -13,7 +16,10 @@
 .icon_javascript::before,
 .icon_html::before,
 .icon_create::before,
-.icon_fullscreen::before {
+.icon_fullscreen::before,
+.icon_code::before,
+.icon_animation::before,
+.icon_ui::before {
   content: "";
   display: block;
   position: absolute;
@@ -37,23 +43,54 @@
   background: url(icon/icon_view_css.png) no-repeat;
   background-size: 32px 32px;
 }
-.icon_javascript {
+.icon_javascript::before {
   background: url(icon/icon_javascript.png) no-repeat;
   background-size: 32px 32px;
-  background-position: 5px 5px;
 }
-.icon_html {
+.icon_html::before {
   background: url(icon/icon_html.png) no-repeat;
   background-size: 32px 32px;
-  background-position: 5px 5px;
 }
-.icon_create {
+.icon_create::before {
   background: url(icon/icon_create.png) no-repeat;
   background-size: 32px 32px;
-  background-position: 5px 5px;
 }
-.icon_fullscreen {
+.icon_fullscreen::before {
   background: url(icon/icon_fullscreen.png) no-repeat;
   background-size: 32px 32px;
-  background-position: 5px 5px;
+}
+.icon_code::before {
+  background: url(icon/icon_code.png) no-repeat;
+  background-size: 32px 32px;
+}
+.icon_animation,
+.icon_ui,
+.icon_gradient {
+  position: relative;
+}
+.icon_animation::before,
+.icon_ui::before,
+.icon_gradient::before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background-size: 32px 32px;
+  margin-left: -16px;
+  margin-top: -16px;
+  left: 50%;
+  top: 50%;
+}
+.icon_ui::before {
+  background: url(icon/icon_ui.png) no-repeat;
+  background-size: 32px 32px;
+}
+.icon_animation::before {
+  background: url(icon/icon_animation.png) no-repeat;
+  background-size: 32px 32px;
+}
+.icon_gradient::before {
+  background: url(icon/icon_gradient.png) no-repeat;
+  background-size: 32px 32px;
 }

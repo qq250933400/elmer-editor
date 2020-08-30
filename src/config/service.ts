@@ -26,7 +26,24 @@ defineGlobalConfiguration({
         }
     },
     service: {
-        config: {}
+        config: {
+            app: {
+                baseUrl: "http://localhost/elmer/public/index.php",
+                envUrls: {
+                    DEV: "http://localhost/elmer/public/index.php"
+                },
+                endPoints: {
+                    createProject: {
+                        url: "/uieditor/project/create",
+                        type: "POST"
+                    },
+                    loadProject: {
+                        url: "/uieditor/project/get",
+                        type: "POST"
+                    }
+                }
+            }
+        }
     }
 });
 

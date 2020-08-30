@@ -74,7 +74,7 @@
         "chalk": "^2.4.1",
         "elmer-common": "^0.1.8",
         "elmer-common-ui": "^1.0.17",
-        "elmer-ui-core": "^1.2.29",
+        "elmer-ui-core": "^1.2.30",
         "lodash.camelcase": "^4.3.0",
         "monaco-editor": "^0.20.0",
         "promise": "^8.0.3"

@@ -17,15 +17,21 @@ export default class MAttributes extends MBase {
     }
     updateAttributes(event:IElmerEvent): void {
         const itemData:ITreeViewItem = event.data;
-        if(itemData.key === 0 && itemData.title === "Root") {
-            this.setState({
-                cssAttrs: {}
-            }, true);
-        } else {
-            const cssAttrs = this.serviceCSS.getDomCSSAttrs(itemData.title);
-            this.setState({
-                cssAttrs
-            }, true);
+        if(/^DOM_/.test(itemData.value)) {
+            if(itemData.value === "DOM_Component") {
+                this.setState({
+                    cssAttrs: {
+                        className: {
+                            defaultValue: "blueTheme"
+                        }
+                    }
+                }, true);
+            } else {
+                const cssAttrs = this.serviceCSS.getDomCSSAttrs(itemData.title);
+                this.setState({
+                    cssAttrs
+                }, true);
+            }
         }
     }
 }

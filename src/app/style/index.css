@@ -1,0 +1,107 @@
+ul,
+ul li,
+p {
+  margin: 0;
+  padding: 0;
+}
+.AppRightArea {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.AppRightArea .AppIframeArea,
+.AppRightArea .AppIframeArea iframe {
+  display: block;
+  height: 100%;
+  width: 100%;
+  border: none;
+}
+.UIEditor_structure {
+  display: block;
+  height: 100%;
+  overflow: auto;
+  background: #E8F4F9;
+}
+.UIEditor_structure .eui-treeview ul li label:hover {
+  background: #fde3cb !important;
+  border-color: #ffd7b2 !important;
+}
+.UIEditor_structure .eui-treeview ul li label:hover i {
+  color: #dc9a5d !important;
+}
+.UIEditor_structure .eui-treeview ul li label:hover span {
+  color: #15428b !important;
+}
+.UIEditor_structure .eui-tab-content {
+  padding: 0 !important;
+}
+.create_template {
+  display: block;
+  width: 400px !important;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 10px 0;
+}
+.create_template > ul {
+  display: block;
+  height: 100%;
+}
+.create_template > ul > li {
+  display: block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  font-size: 12px;
+  padding: 0 10px;
+  height: 50px;
+  line-height: 50px;
+  padding-left: 50px;
+  position: relative;
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  margin-top: 5px;
+  border-bottom: 1px solid rgba(180, 214, 248, 0.69);
+}
+.create_template > ul > li > i {
+  display: block;
+  width: 32px;
+  height: 32px;
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  margin-top: -16px;
+}
+.create_template > ul > li > label {
+  display: block;
+  height: 50px;
+  line-height: 50px;
+  font-size: 14px;
+  color: #666;
+}
+.create_template > ul > li > label > i {
+  font-style: normal;
+  font-size: 12px;
+  color: #a9a9a9;
+  padding-left: 5px;
+}
+.create_template > ul > li:hover {
+  background: #f2faff;
+}
+.create_template > ul > li.active {
+  background: #fde3cb;
+}
+.create_template > label {
+  display: block;
+  position: relative;
+}
+.create_template > label > span {
+  display: inline-block;
+  vertical-align: middle;
+}
+.create_template > label > input[type=text] {
+  display: inline-block;
+  vertical-align: middle;
+}
