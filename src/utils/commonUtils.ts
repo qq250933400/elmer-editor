@@ -1,5 +1,6 @@
 import { StaticCommon } from "elmer-common";
-import { showToast } from "elmer-common-ui/lib/components";
+
+const showToast = (message) => alert(message);
 /**
  * 错误统一处理方法，遇到错误结果返回true,否则返回undefined或者true
  * @param resp 返回数据

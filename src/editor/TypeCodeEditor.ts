@@ -1,4 +1,4 @@
-import { IPropCheckRule, PropTypes } from "elmer-ui-core";
+import { PropTypes } from "elmer-ui-core";
 
 export type TypeCodeEditorProps = {
     language: string;
@@ -9,7 +9,7 @@ export type TypeCodeEditorProps = {
     theme?: string;
 };
 
-export type TypeCodeEditorPropsRule = {[P in keyof TypeCodeEditorProps]?: IPropCheckRule};
+export type TypeCodeEditorPropsRule = {[P in keyof TypeCodeEditorProps]?: any};
 
 export const definePropTypes: TypeCodeEditorPropsRule = {
     language: {

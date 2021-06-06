@@ -1,4 +1,5 @@
-import { Component, declareComponent, IPropCheckRule, PropTypes } from "elmer-ui-core";
+import { Component } from "elmer-ui-core";
+import { StaticCommon as utils } from "elmer-common";
 import * as monacoApi from "monaco-editor/esm/vs/editor/editor.api";
 import { definePropTypes, TypeCodeEditorProps, TypeCodeEditorPropsRule } from "./TypeCodeEditor";
 // tslint:disable: ordered-imports
@@ -24,10 +25,7 @@ import "monaco-editor/esm/vs/basic-languages/yaml/yaml.contribution";
 
 import "./index.less";
 
-@declareComponent({
-    selector: "code-editor"
-})
-export default class CodeEditor extends Component {
+export default class CodeEditor extends Component<TypeCodeEditorProps> {
     static propType: TypeCodeEditorPropsRule = definePropTypes;
     uid: string;
     uDom: HTMLDivElement;
@@ -37,9 +35,10 @@ export default class CodeEditor extends Component {
     private language: string;
     constructor(props:TypeCodeEditorProps) {
         super(props);
-        this.uid = this.guid();
+        this.uid = utils.guid();
         this.initCode = props.code;
         this.language = props.language;
+        console.log(this.language, "----Typescript----");
     }
     $onPropsChanged(props: TypeCodeEditorProps): void {
         if(props.code !== this.initCode) {

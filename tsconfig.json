@@ -8,7 +8,9 @@
         "sourceMap": false,
         "allowJs": false,
         "checkJs": false,
-        "module": "commonJs",
+        // "module": "commonJs",
+        "module": "esnext",
+        "moduleResolution": "node",
         "removeComments": true,
         "target": "es5",
         "lib": [
